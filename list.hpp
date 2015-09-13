@@ -1,58 +1,60 @@
 #ifndef _KIRAI_LIST
+#define _KIRAI_LIST
+
 #pragma once
 
 #include <cstdlib>
 
 namespace kirai {
-	template <class Type>
-	struct Node {
-		typedef Node<Type>* NP;
-		Type _data;
-		NP pre;
-		NP next;
-		Node<Type>() { pre = NULL; next = NULL; }
+	template <class type>
+	struct listnode {
+		typedef listnode<type>* np;
+		type _data;
+		np pre;
+		np next;
+		listnode<type>() { pre = NULL; next = NULL; }
 	};
 
-	template <class Type>
+	template <class type>
 	class list {
-		typedef Node<Type>* NP;
-		typedef Node<Type> NT;
+		typedef listnode<type>* np;
+		typedef listnode<type> nt;
 
 	public:
-		list<Type>() { head = NULL; tail = NULL; _size = 0; }
-		~list<Type>() { clear(); }
+		list<type>() { head = NULL; tail = NULL; _size = 0; }
+		~list<type>() { clear(); }
 
 	public:
-		bool push_back(Type);
-		bool push_front(Type);
-		Type pop_back();
-		Type pop_front();
+		bool push_back(type);
+		bool push_front(type);
+		type pop_back();
+		type pop_front();
 		void clear();
 		bool empty() const;
 		int size() const;
-		Type front() const;
-		Type back() const;
+		type front() const;
+		type back() const;
 		// to do
-		bool insert(Type, int);
+		bool insert(type, int);
 		bool remove(int);
-		Type data(int);
+		type data(int);
 
 	public:
-		Type &operator[] (const int&) const;
+		type &operator[] (const int&) const;
 
 	protected:
-		NP head;
-		NP tail;
+		np head;
+		np tail;
 
 	private:
 		int _size;
-		void _init(Type);
+		void _init(type);
 	};
 
 	//operator overload
-	template <class Type>
-	Type &list<Type>::operator[] (const int &num) const {
-		NP cur = head;
+	template <class type>
+	type &list<type>::operator[] (const int &num) const {
+		np cur = head;
 		for (int i = 0; i < num; i++) {
 			cur = cur->next;
 		}
@@ -60,44 +62,44 @@ namespace kirai {
 	}
 
 	//functions
-	template <class Type>
-	Type list<Type>::front() const {
+	template <class type>
+	type list<type>::front() const {
 		return head->_data;
 	}
 
-	template <class Type>
-	Type list<Type>::back() const {
+	template <class type>
+	type list<type>::back() const {
 		return tail->_data;
 	}
 
-	template <class Type>
-	bool list<Type>::empty() const {
+	template <class type>
+	bool list<type>::empty() const {
 		return _size == 0 ? true : false;
 	}
 
-	template <class Type>
-	int list<Type>::size() const {
+	template <class type>
+	int list<type>::size() const {
 		return _size;
 	}
 
-	template <class Type>
-	void list<Type>::_init(Type val) {
+	template <class type>
+	void list<type>::_init(type val) {
 		if (head != NULL) {
 			clear();
 		}
-		head = new NT;
+		head = new nt;
 		head->_data = val;
 		tail = head;
 		_size++;
 	}
 
-	template <class Type>
-	bool list<Type>::push_back(Type val) {
+	template <class type>
+	bool list<type>::push_back(type val) {
 		if (_size == 0) {
 			_init(val);
 			return true;
 		}
-		NP tmp = new NT;
+		np tmp = new nt;
 		if (tmp == NULL) {
 			return false;
 		}
@@ -109,13 +111,13 @@ namespace kirai {
 		return true;
 	}
 
-	template <class Type>
-	bool list<Type>::push_front(Type val) {
+	template <class type>
+	bool list<type>::push_front(type val) {
 		if (empty()) {
 			_init(val);
 			return true;
 		}
-		NP tmp = new NT;
+		np tmp = new nt;
 		if (tmp == NULL) {
 			return false;
 		}
@@ -126,26 +128,26 @@ namespace kirai {
 		return true;
 	}
 
-	template <class Type>
-	Type list<Type>::pop_back() {
+	template <class type>
+	type list<type>::pop_back() {
 		if (empty()) {
 			exit(EXIT_FAILURE);
 		}
-		NP cur = tail;
-		Type tmp = cur->_data;
+		np cur = tail;
+		type tmp = cur->_data;
 		tail = tail->pre;
 		delete cur;
 		_size--;
 		return tmp;
 	}
 
-	template<class Type>
-	Type list<Type>::pop_front() {
+	template<class type>
+	type list<type>::pop_front() {
 		if (empty()) {
 			exit(EXIT_FAILURE);
 		}
-		NP cur = head;
-		Type tmp = cur->_data;
+		np cur = head;
+		type tmp = cur->_data;
 		head = head->next;
 		delete cur;
 		_size--;
@@ -153,13 +155,13 @@ namespace kirai {
 		return tmp;
 	}
 
-	template <class Type>
-	void list<Type>::clear() {
+	template <class type>
+	void list<type>::clear() {
 		if (_size == 0) {
 			return;
 		}
-		NP cur = tail;
-		NP tmp = tail;
+		np cur = tail;
+		np tmp = tail;
 		while (cur->next != NULL) {
 			cur = cur->pre;
 			delete tmp;
@@ -170,16 +172,16 @@ namespace kirai {
 	}
 
 	// to do
-	template <class Type>
-	bool list<Type>::insert(Type val, int pos) {
+	template <class type>
+	bool list<type>::insert(type val, int pos) {
 		if (pos >= _size || pos < 0) {
 			return false;
 		}
-		NP cur = head;
+		np cur = head;
 		for (int i = 0; i != pos; i++) {
 			cur = cur->next;
 		}
-		NP tmp = new NT;
+		np tmp = new nt;
 		cur = cur->pre;
 		tmp->next = cur->next;
 		cur->next->pre = tmp;
@@ -190,18 +192,18 @@ namespace kirai {
 		return true;
 	}
 
-	template <class Type>
-	bool list<Type>::remove(int pos) {
-		NP cur = head;
+	template <class type>
+	bool list<type>::remove(int pos) {
+		np cur = head;
 		if (cur->next == NULL || pos >= _size || pos < 0) {
 			return false;
 		}
 		for (int i = 0; i != pos + 1; i++) {
 			cur = cur->next;
 		}
-		NP tmp = cur;
+		np tmp = cur;
 		cur = cur->pre;
-		NP del = cur;
+		np del = cur;
 		cur = cur->pre;
 		cur->next = tmp;
 		tmp->pre = cur;
@@ -210,14 +212,13 @@ namespace kirai {
 		return true;
 	}
 
-	template <class Type>
-	Type list<Type>::data(int pos) {
-		NP cur = head;
+	template <class type>
+	type list<type>::data(int pos) {
+		np cur = &head;
 		for (int i = 0; i < pos; i++){
 			cur = cur->next;
 		}
 		return cur->_data;
 	}
-
 }
 #endif

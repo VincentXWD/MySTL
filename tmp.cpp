@@ -12,16 +12,14 @@
 #include <map>
 #include <cmath>
 #include "list"
+#include "stack"
 
 using namespace std;
 
 int main() {
 	kirai::list<int> lst;
 	for (int i = 0; i < 5; i++) {
-		lst.push_back(i);
-	}
-	for (int i = 0; i < lst.size(); i++) {
-		cout << lst.data(i) << " ";
+		lst.push_back(i*2+1);
 	}
 	cout << endl;
 	lst.insert(5, 2);

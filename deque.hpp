@@ -1,69 +1,71 @@
 #ifndef _KIRAI_DEQUE
+#define _KIRAI_DEQUE
+
 #pragma once
 
 #include <cstdlib>
 
 namespace kirai {
-	template <class Type>
-	struct Node {
-		typedef Node<Type>* NP;
-		Type data;
-		NP pre;
-		NP next;
+	template <class type>
+	struct node {
+		typedef node<type>* np;
+		type data;
+		np pre;
+		np next;
 		int pos;
-		Node<Type>() { pre = NULL; next = NULL; }
+		node<type>() { pre = NULL; next = NULL; }
 	};
 
-	template <class Type>
+	template <class type>
 	class deque {
-		typedef Node<Type>* NP;
-		typedef Node<Type> NT;
+		typedef node<type>* np;
+		typedef node<type> NT;
 
 	public:
-		deque<Type>() { head = NULL; tail = NULL; _size = 0; }
-		~deque<Type>() { clear(); }
+		deque<type>() { head = NULL; tail = NULL; _size = 0; }
+		~deque<type>() { clear(); }
 
 	public:
-		bool push_back(Type);
-		bool push_front(Type);
-		Type pop_back();
-		Type pop_front();
+		bool push_back(type);
+		bool push_front(type);
+		type pop_back();
+		type pop_front();
 		void clear();
 		bool empty() const;
 		int size() const;
-		Type front() const;
-		Type back() const;
+		type front() const;
+		type back() const;
 	protected:
-		NP head;
-		NP tail;
+		np head;
+		np tail;
 
 	private:
 		int _size;
-		void _init(Type);
+		void _init(type);
 	};
 
-	template <class Type>
-	Type deque<Type>::front() const {
+	template <class type>
+	type deque<type>::front() const {
 		return head->data;
 	}
 
-	template <class Type>
-	Type deque<Type>::back() const {
+	template <class type>
+	type deque<type>::back() const {
 		return tail->data;
 	}
 
-	template <class Type>
-	bool deque<Type>::empty() const {
+	template <class type>
+	bool deque<type>::empty() const {
 		return _size == 0 ? true : false;
 	}
 
-	template <class Type>
-	int deque<Type>::size() const {
+	template <class type>
+	int deque<type>::size() const {
 		return _size;
 	}
 
-	template <class Type>
-	void deque<Type>::_init(Type val) {
+	template <class type>
+	void deque<type>::_init(type val) {
 		if (head != NULL) {
 			clear();
 		}
@@ -73,13 +75,13 @@ namespace kirai {
 		_size++;
 	}
 
-	template <class Type>
-	bool deque<Type>::push_back(Type val) {
+	template <class type>
+	bool deque<type>::push_back(type val) {
 		if (_size == 0) {
 			_init(val);
 			return true;
 		}
-		NP tmp = new NT;
+		np tmp = new NT;
 		if (tmp == NULL) {
 			return false;
 		}
@@ -91,13 +93,13 @@ namespace kirai {
 		return true;
 	}
 
-	template <class Type>
-	bool deque<Type>::push_front(Type val) {
+	template <class type>
+	bool deque<type>::push_front(type val) {
 		if (empty()) {
 			_init(val);
 			return true;
 		}
-		NP tmp = new NT;
+		np tmp = new NT;
 		if (tmp == NULL) {
 			return false;
 		}
@@ -108,39 +110,39 @@ namespace kirai {
 		return true;
 	}
 
-	template <class Type>
-	Type deque<Type>::pop_back() {
+	template <class type>
+	type deque<type>::pop_back() {
 		if (empty()) {
 			exit(EXIT_FAILURE);
 		}
-		NP cur = tail;
-		Type tmp = cur->data;
+		np cur = tail;
+		type tmp = cur->data;
 		tail = tail->pre;
 		delete cur;
 		_size--;
 		return tmp;
 	}
 
-	template<class Type>
-	Type deque<Type>::pop_front() {
+	template<class type>
+	type deque<type>::pop_front() {
 		if (empty()) {
 			exit(EXIT_FAILURE);
 		}
-		NP cur = head;
-		Type tmp = cur->data;
+		np cur = &head;
+		type tmp = cur->data;
 		head = head->next;
 		delete cur;
 		_size--;
 		return tmp;
 	}
 
-	template <class Type>
-	void deque<Type>::clear() {
+	template <class type>
+	void deque<type>::clear() {
 		if (_size == 0) {
 			return;
 		}
-		NP cur = tail;
-		NP tmp = tail;
+		np cur = tail;
+		np tmp = tail;
 		while (cur->next != NULL) {
 			cur = cur->pre;
 			delete tmp;

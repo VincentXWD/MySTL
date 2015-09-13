@@ -1,54 +1,56 @@
 #ifndef _KIRAI_STACK
+#define _KIRAI_STACK
+
 #pragma once
 
 #include <cstdlib>
 
 namespace kirai {
-	template <class Type>
-	struct Node {
-		typedef Node<Type>* NP;
-		Type data;
-		NP pre;
-		Node<Type>() { pre = NULL; }
+	template <class type>
+	struct stacknode {
+		typedef stacknode<type>* np;
+		type data;
+		np pre;
+		stacknode<type>() { pre = NULL; }
 	};
 
-	template <class Type>
+	template <class type>
 	class stack {
-		typedef Node<Type>* NP;
-		typedef Node<Type> NT;
+		typedef stacknode<type>* np;
+		typedef stacknode<type> nt;
 
 	public:
-		stack<Type>() { _top = NULL; _size = 0; }
-		~stack<Type>() { clear(); }
+		stack<type>() { _top = NULL; _size = 0; }
+		~stack<type>() { clear(); }
 
 	public:
-		bool push(Type);
-		Type pop();
+		bool push(type);
+		type pop();
 		void clear();
 		bool empty() const;
 		int size() const;
-		Type top() const;
+		type top() const;
 
 	protected:
-		NP _top;
+		np _top;
 		int _size;
 
 	private:
-		void _init(Type);
-		void _clear(NP);
+		void _init(type);
+		void _clear(np);
 	};
 
-	template <class Type>
-	Type stack<Type>::top() const {
+	template <class type>
+	type stack<type>::top() const {
 		return _top->data;
 	}
-	template <class Type>
-	bool stack<Type>::empty() const {
+	template <class type>
+	bool stack<type>::empty() const {
 		return _size == 0 ? true : false;
 	}
 
-	template <class Type>
-	void stack<Type>::_clear(NP cur) {
+	template <class type>
+	void stack<type>::_clear(np cur) {
 		if (cur == NULL) {
 			return;
 		}
@@ -56,28 +58,28 @@ namespace kirai {
 		delete cur;
 	}
 
-	template <class Type>
-	int stack<Type>::size() const {
+	template <class type>
+	int stack<type>::size() const {
 		return _size;
 	}
 
-	template <class Type>
-	void stack<Type>::_init(Type val) {
+	template <class type>
+	void stack<type>::_init(type val) {
 		if (_top != NULL) {
 			clear();
 		}
-		_top = new NT;
+		_top = new nt;
 		_top->data = val;
 		_size++;
 	}
 
-	template <class Type>
-	bool stack<Type>::push(Type val) {
+	template <class type>
+	bool stack<type>::push(type val) {
 		if (_size == 0) {
 			_init(val);
 			return true;
 		}
-		NP tmp = new NT;
+		np tmp = new nt;
 		if (tmp == NULL) {
 			return false;
 		}
@@ -88,21 +90,21 @@ namespace kirai {
 		return true;
 	}
 
-	template <class Type>
-	Type stack<Type>::pop() {
+	template <class type>
+	type stack<type>::pop() {
 		if (empty()) {
 			exit(EXIT_FAILURE);
 		}
-		NP cur = _top;
-		Type tmp = cur->data;
+		np cur = _top;
+		type tmp = cur->data;
 		_top = _top->pre;
 		delete cur;
 		_size--;
 		return tmp;
 	}
 
-	template<class Type>
-	void stack<Type>::clear() {
+	template<class type>
+	void stack<type>::clear() {
 		_clear(_top);
 		_top = NULL;
 		_size = 0;
