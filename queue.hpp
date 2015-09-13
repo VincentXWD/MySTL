@@ -9,7 +9,6 @@ namespace kirai {
 		typedef Node<Type>* NP;
 		Type data;
 		NP next;
-		int pos;
 		Node<Type>() { next = NULL; }
 	};
 
@@ -30,6 +29,7 @@ namespace kirai {
 		int size() const;
 		Type front() const;
 		Type back() const;
+
 	protected:
 		NP head;
 		NP tail;

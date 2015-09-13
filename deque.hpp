@@ -85,6 +85,7 @@ namespace kirai {
 		}
 		tmp->data = val;
 		tmp->pre = tail;
+		tail->next = tmp;
 		tail = tmp;
 		_size++;
 		return true;

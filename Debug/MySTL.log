@@ -1,2 +1,3 @@
 ﻿  tmp.cpp
+c:\users\kazakiri\desktop\数据结构\mystl\mystl\tmp.cpp(37): warning C4552: “+”: 运算符不起任何作用；应输入带副作用的运算符
   MySTL.vcxproj -> C:\Users\Kazakiri\Desktop\数据结构\MySTL\Debug\MySTL.exe

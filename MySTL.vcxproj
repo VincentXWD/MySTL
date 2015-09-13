@@ -80,12 +80,14 @@
   <ItemGroup>
     <ClInclude Include="deque" />
     <ClInclude Include="deque.hpp" />
+    <ClInclude Include="list.hpp" />
     <ClInclude Include="queue.hpp" />
     <ClInclude Include="stack.hpp" />
     <ClInclude Include="stack" />
     <ClInclude Include="queue" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="list" />
     <ClCompile Include="tmp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
