@@ -1,8 +1,6 @@
 #ifndef _KIRAI_QUEUE
 #define _KIRAI_QUEUE
 
-#pragma once
-
 #include <cstdlib>
 
 namespace kirai {

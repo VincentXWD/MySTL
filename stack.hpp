@@ -1,8 +1,6 @@
 #ifndef _KIRAI_STACK
 #define _KIRAI_STACK
 
-#pragma once
-
 #include <cstdlib>
 
 namespace kirai {

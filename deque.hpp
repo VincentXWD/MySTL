@@ -1,8 +1,6 @@
 #ifndef _KIRAI_DEQUE
 #define _KIRAI_DEQUE
 
-#pragma once
-
 #include <cstdlib>
 
 namespace kirai {

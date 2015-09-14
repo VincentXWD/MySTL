@@ -1,8 +1,6 @@
 #ifndef _KIRAI_LIST
 #define _KIRAI_LIST
 
-#pragma once
-
 #include <cstdlib>
 
 namespace kirai {
