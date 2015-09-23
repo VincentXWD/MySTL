@@ -21,7 +21,6 @@ namespace kirai {
 	public:
 		list<type>() { head = NULL; tail = NULL; _size = 0; }
 		~list<type>() { clear(); }
-
 	public:
 		bool push_back(type);
 		bool push_front(type);
