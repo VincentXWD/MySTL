@@ -22,12 +22,13 @@ int main() {
 		lst.push_back(i*2+1);
 	}
 	cout << endl;
-	lst.insert(5, 2);
 	for (int i = 0; i < lst.size(); i++) {
 		cout << lst[i] << " ";
 	}
 	cout << endl;
-	lst.remove(2);
+	int t = 3;
+	while(t--)	cout << lst.remove(2) << " ";
+	cout << endl;
 	for (int i = 0; i < lst.size(); i++) {
 		cout << lst[i] << " ";
 	}

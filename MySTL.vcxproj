@@ -78,6 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bst.hpp" />
     <ClInclude Include="deque" />
     <ClInclude Include="deque.hpp" />
     <ClInclude Include="list.hpp" />
