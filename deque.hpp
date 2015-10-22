@@ -17,7 +17,7 @@ namespace kirai {
 	template <class type>
 	class deque {
 		typedef node<type>* np;
-		typedef node<type> NT;
+		typedef node<type> nt;
 
 	public:
 		deque<type>() { head = NULL; tail = NULL; _size = 0; }
@@ -67,7 +67,7 @@ namespace kirai {
 		if (head != NULL) {
 			clear();
 		}
-		head = new NT;
+		head = new nt;
 		head->data = val;
 		tail = head;
 		_size++;
@@ -79,7 +79,7 @@ namespace kirai {
 			_init(val);
 			return true;
 		}
-		np tmp = new NT;
+		np tmp = new nt;
 		if (tmp == NULL) {
 			return false;
 		}
@@ -97,7 +97,7 @@ namespace kirai {
 			_init(val);
 			return true;
 		}
-		np tmp = new NT;
+		np tmp = new nt;
 		if (tmp == NULL) {
 			return false;
 		}

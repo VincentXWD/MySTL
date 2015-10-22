@@ -1,3 +1,4 @@
+#pragma warning(disable:4996)
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
@@ -11,26 +12,19 @@
 #include <set>
 #include <map>
 #include <cmath>
-#include "list"
-#include "stack"
+#include "bst"
 
 using namespace std;
 
+void show(int x) {
+	printf("%d ", x);
+}
 int main() {
-	kirai::list<int> lst;
-	for (int i = 0; i < 5; i++) {
-		lst.push_back(i*2+1);
+	kirai::bst<int> a;
+	int tmp;
+	for (int i = 0; i < 4; i++) {
+		scanf("%d", &tmp);
+		a.insert(tmp);
 	}
-	cout << endl;
-	for (int i = 0; i < lst.size(); i++) {
-		cout << lst[i] << " ";
-	}
-	cout << endl;
-	int t = 3;
-	while(t--)	cout << lst.remove(2) << " ";
-	cout << endl;
-	for (int i = 0; i < lst.size(); i++) {
-		cout << lst[i] << " ";
-	}
-	cout << endl;
+	a.postorder(show);
 }
