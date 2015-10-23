@@ -26,5 +26,9 @@ int main() {
 		scanf("%d", &tmp);
 		a.insert(tmp);
 	}
-	a.postorder(show);
+	a.inorder(show);
+	cout << endl  << a.max() << " " << a.min() << endl;
+	cout << a.remove(4) << endl;
+	a.inorder(show);
+
 }

@@ -6,10 +6,10 @@ namespace kirai {
 	struct bstnode {
 		typedef bstnode<type>* np;
 		type _data;
-		bool avail;
+		np pre;
 		np left;
 		np right;
-		bstnode<type>() { left = NULL; right = NULL; avail = true; }
+		bstnode<type>() { pre = NULL; left = NULL; right = NULL; }
 		bstnode<type>(const int& x) : _data(x) { bstnode<type>(); }
 	};
 
@@ -23,9 +23,10 @@ namespace kirai {
 		~bst() = default;
 		bool empty() const { return _root == NULL; }
 		void insert(const type&);
+		bool search(const type& x) const { return _search(_root, x) ? true : false; }
 		bool remove(const type&);
-		bool query(const type&) const;
-		bool change(const type&);
+		type min() const { return _min(_root)->_data; }
+		type max() const { return _max(_root)->_data; }
 
 	public:
 		void preorder(void(*visit)(type)) { _preorder(_root, visit); };
@@ -33,24 +34,101 @@ namespace kirai {
 		void postorder(void(*visit)(type)) { _postorder(_root, visit); };
 
 	protected:
+		bstnode<type>* _search(np, const type&);
+		bstnode<type>* _min(np) const;
+		bstnode<type>* _max(np) const;
 		void _insert(np, const type&);
 		void _inorder(np, void(*)(type));
 		void _postorder(np, void(*)(type));
 		void _preorder(np, void(*)(type));
-		bool _remove(np, const type&);
+		type _remove(np);
+		type __remove(np);
+
+	protected:
+		static bool _isroot(np cur) { return (cur->pre == NULL); }
+		static bool _isleaf(np cur) { return (cur->left == NULL && cur->right == NULL); }
+
 	private:
 		np _root;
 	};
-
-	//unfinished.
 	template <class type>
-	bool bst<type>::remove(const type& x) {
-		_remove(_root, x);
+	bstnode<type>* bst<type>::_min(np cur) const {
+		if (empty()) {
+			return NULL;
+		}
+		while (cur->left) {
+			cur = cur->left;
+		}
+		return cur;
 	}
 
 	template <class type>
-	bool bst<type>::_remove(np cur, const type& x) {
-		if (cur->_data < )
+	bstnode<type>* bst<type>::_max(np cur) const {
+		if (empty()) {
+			return NULL;
+		}
+		while (cur->right) {
+			cur = cur->right;
+		}
+		return cur;
+	}
+
+	template <class type>
+	bstnode<type>* bst<type>::_search(np cur, const type& x) {
+		if (cur == NULL) {
+			return NULL;
+		}
+		if (cur->_data == x) {
+			return cur;
+		}
+		else if (x >= cur->_data) {
+			return _search(cur->right, x);
+		}
+		else {
+			return _search(cur->left, x);
+		}
+	}
+
+	template <class type>
+	bool bst<type>::remove(const type& x) {
+		np cur = _search(_root, x);
+		if (cur == NULL) {
+			return false;
+		}
+		_remove(cur);
+		return true;
+	}
+
+	template <class type>
+	type bst<type>::_remove(np cur) {
+		np tmp;
+		type x;
+		if(_isleaf(cur)) {
+			return __remove(cur);
+		}
+		else {
+			tmp = cur->left ? _max(cur->left) : _min(cur->right);
+			x = cur->_data;
+			cur->_data = _remove(tmp);
+			return x;
+		}
+	}
+
+	template <class type>
+	type bst<type>::__remove(np cur) {
+		np pre;
+		type x = cur->_data;
+		pre = cur->pre;
+		if (!_isroot(cur)) {
+			if (pre->left == cur) {
+				pre->left = NULL;
+			}
+			else {
+				pre->right = NULL;
+			}
+		}
+		delete cur;
+		return x;
 	}
 
 	template <class type>
@@ -59,27 +137,20 @@ namespace kirai {
 			np tmp = new nt;
 			_root = tmp;
 			_root->_data = x;
-			_root->avail = false;
 			return;
 		}
 		_insert(_root, x);
 		return;
 	}
-	//above.
 
-	// x () than _data, then put x into (). : larger:right, smaller:left
 	template <class type>
 	void bst<type>::_insert(np cur, const type& x) {
 		if (x >= cur->_data) {
 			if (cur->right == NULL) {
 				np tmp = new nt;
 				cur->right = tmp;
+				cur->right->pre = cur;
 				tmp->_data = x;
-				tmp->avail = false;
-				return;
-			}
-			else if (cur->right->avail = true) {
-				cur->right->_data = x;
 				return;
 			}
 			else {
@@ -90,12 +161,8 @@ namespace kirai {
 			if (cur->left == NULL) {
 				np tmp = new nt;
 				cur->left = tmp;
+				cur->left->pre = cur;
 				tmp->_data = x;
-				tmp->avail = false;
-				return;
-			}
-			else if (cur->left->avail = true) {
-				cur->left->_data = x;
 				return;
 			}
 			else {
