@@ -78,6 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="avl.hpp" />
     <ClInclude Include="bst.hpp" />
     <ClInclude Include="deque" />
     <ClInclude Include="deque.hpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="queue" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="avl" />
     <ClCompile Include="bst" />
     <ClCompile Include="list" />
     <ClCompile Include="tmp.cpp" />

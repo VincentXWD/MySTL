@@ -39,6 +39,9 @@
     <ClInclude Include="bst.hpp">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="avl.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tmp.cpp">
@@ -48,6 +51,9 @@
       <Filter>头文件</Filter>
     </ClCompile>
     <ClCompile Include="bst">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="avl">
       <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>

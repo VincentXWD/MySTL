@@ -12,20 +12,21 @@
 #include <set>
 #include <map>
 #include <cmath>
-#include "bst"
+#include "avl"
 
 using namespace std;
 
 void show(int x) {
-	printf("%d ", x);
+
 }
 
 int main() {
-	kirai::bst<int> a;
-	int tmp;
-	for (int i = 0; i < 4; i++) {
-		scanf("%d", &tmp);
-		a.insert(tmp);
-	}
+	kirai::avl<int> a;
+	a.insert(8);
+	a.insert(1);
+	a.insert(13);
+	a.insert(4);
+	a.insert(2);
+	cout << a.height();
 	a.bfs(show);
 }
