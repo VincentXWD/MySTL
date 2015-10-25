@@ -1,5 +1,6 @@
 #ifndef _KIRAI_BST
 #define _KIRAI_BST
+#include "queue"
 
 namespace kirai {
 	template<class type>
@@ -27,6 +28,7 @@ namespace kirai {
 		bool remove(const type&);
 		type min() const { return _min(_root)->_data; }
 		type max() const { return _max(_root)->_data; }
+		void bfs(void(*)(type));
 
 	public:
 		void preorder(void(*visit)(type)) { _preorder(_root, visit); };
@@ -51,6 +53,22 @@ namespace kirai {
 	private:
 		np _root;
 	};
+
+	//unfinished.
+	template<class type>
+	void bst<type>::bfs(void(*visit)(type data)) {
+		kirai::queue<np> q;
+		q.push_back(_root);
+		while (!q.empty()) {
+			np tmp = q.front();
+			visit(q.front()->_data);
+			if(q.front()->left)	q.push_back(tmp->left);
+			if(q.front()->right)	q.push_back(tmp->right);
+			q.pop_front();
+		}
+	}
+	//above
+
 	template <class type>
 	bstnode<type>* bst<type>::_min(np cur) const {
 		if (empty()) {
@@ -107,6 +125,12 @@ namespace kirai {
 			return __remove(cur);
 		}
 		else {
+			/*if (cur->left != NULL) {
+				tmp = _max(cur->left);
+			}
+			else {
+				tmp = _min(cur->right);
+			}*/
 			tmp = cur->left ? _max(cur->left) : _min(cur->right);
 			x = cur->_data;
 			cur->_data = _remove(tmp);
@@ -116,9 +140,8 @@ namespace kirai {
 
 	template <class type>
 	type bst<type>::__remove(np cur) {
-		np pre;
 		type x = cur->_data;
-		pre = cur->pre;
+		np pre = cur->pre;
 		if (!_isroot(cur)) {
 			if (pre->left == cur) {
 				pre->left = NULL;

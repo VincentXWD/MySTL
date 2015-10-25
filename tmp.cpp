@@ -19,6 +19,7 @@ using namespace std;
 void show(int x) {
 	printf("%d ", x);
 }
+
 int main() {
 	kirai::bst<int> a;
 	int tmp;
@@ -26,9 +27,5 @@ int main() {
 		scanf("%d", &tmp);
 		a.insert(tmp);
 	}
-	a.inorder(show);
-	cout << endl  << a.max() << " " << a.min() << endl;
-	cout << a.remove(4) << endl;
-	a.inorder(show);
-
+	a.bfs(show);
 }
