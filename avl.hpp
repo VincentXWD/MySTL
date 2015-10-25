@@ -8,10 +8,9 @@ namespace kirai {
 		typedef avlnode<type>* np;
 		type _data;
 		int height;
-		np pre;
 		np left;
 		np right;
-		avlnode<type>() { height = 0; pre = NULL; left = NULL; right = NULL; }
+		avlnode<type>() { height = 0; left = NULL; right = NULL; }
 		avlnode<type>(const int& x) : _data(x) { avlnode<type>(); }
 	};
 
@@ -49,6 +48,7 @@ namespace kirai {
 		avlnode<type>* _search(np, const type&);
 		avlnode<type>* _min(np) const;
 		avlnode<type>* _max(np) const;
+		void _setnull(np, np);
 		void _insert(np, const type&);
 		void _inorder(np, void(*)(type));
 		void _postorder(np, void(*)(type));
@@ -58,7 +58,7 @@ namespace kirai {
 		bool _empty(np cur) const { return cur == NULL; }
 
 	protected:
-		static bool _isroot(np cur) { return (cur->pre == NULL); }
+		bool _isroot(np cur) { return (cur == _root); }
 		static bool _isleaf(np cur) { return (cur->left == NULL && cur->right == NULL); }
 
 	private:
@@ -77,6 +77,20 @@ namespace kirai {
 			if (q.front()->right)	q.push_back(tmp->right);
 			q.pop_front();
 		}
+	}
+
+	template <class type>
+	void avl<type>::_setnull(np cur, np aim) {
+		if (cur->left == aim) {
+			cur->left = NULL;
+			return;
+		}
+		if (cur->right == aim) {
+			cur->right = NULL;
+			return;
+		}
+		if (aim->_data > cur->_data) _setnull(cur->right, aim);
+		if (aim->_data < cur->_data) _setnull(cur->left, aim);
 	}
 
 	template <class type>
@@ -109,7 +123,7 @@ namespace kirai {
 		if (cur->_data == x) {
 			return cur;
 		}
-		else if (x >= cur->_data) {
+		else if (x > cur->_data) {
 			return _search(cur->right, x);
 		}
 		else {
@@ -132,7 +146,13 @@ namespace kirai {
 		np tmp;
 		type x;
 		if (_isleaf(cur)) {
-			return __remove(cur);
+			x = cur->_data;
+			if (!_isroot(cur)) {
+				_setnull(_root, cur);
+				delete(cur);
+				cur = NULL;
+			}
+			return x;
 		}
 		else {
 			tmp = cur->left ? _max(cur->left) : _min(cur->right);
@@ -140,22 +160,6 @@ namespace kirai {
 			cur->_data = _remove(tmp);
 			return x;
 		}
-	}
-
-	template <class type>
-	type avl<type>::__remove(np cur) {
-		type x = cur->_data;
-		np pre = cur->pre;
-		if (!_isroot(cur)) {
-			if (pre->left == cur) {
-				pre->left = NULL;
-			}
-			else {
-				pre->right = NULL;
-			}
-		}
-		delete cur;
-		return x;
 	}
 
 	template <class type>
@@ -173,11 +177,10 @@ namespace kirai {
 
 	template <class type>
 	void avl<type>::_insert(np cur, const type& x) {
-		if (x >= cur->_data) {
+		if (x > cur->_data) {
 			if (cur->right == NULL) {
 				np tmp = new nt();
 				cur->right = tmp;
-				cur->right->pre = cur;
 				cur->height++;
 				tmp->_data = x;
 				return;
@@ -185,12 +188,15 @@ namespace kirai {
 			else {
 				_insert(cur->right, x);
 			}
+			cur->height = (
+				_height(cur->left) > _height(cur->right) ?
+				_height(cur->left) : _height(cur->right)
+			) + 1;
 		}
-		else {
+		if (x < cur->_data) {
 			if (cur->left == NULL) {
 				np tmp = new nt();
 				cur->left = tmp;
-				cur->left->pre = cur;
 				cur->height++;
 				tmp->_data = x;
 				return;
@@ -198,12 +204,11 @@ namespace kirai {
 			else {
 				_insert(cur->left, x);
 			}
-		}
-
-		cur->height = (
-			_height(cur->left) > _height(cur->right) ?
-			_height(cur->left) : _height(cur->right)
+			cur->height = (
+				_height(cur->left) > _height(cur->right) ?
+				_height(cur->left) : _height(cur->right)
 			) + 1;
+		}
 	}
 
 	template <class type>

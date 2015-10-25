@@ -17,6 +17,9 @@
 using namespace std;
 
 void show(int x) {
+	printf("%d ", x);
+}
+void foo(int x) {
 
 }
 
@@ -25,8 +28,9 @@ int main() {
 	a.insert(8);
 	a.insert(1);
 	a.insert(13);
+	a.insert(13);
 	a.insert(4);
-	a.insert(2);
-	cout << a.height();
-	a.bfs(show);
+	a.inorder(show);
+	cout << endl;
+	a.bfs(foo);
 }
