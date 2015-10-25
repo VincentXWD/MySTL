@@ -54,7 +54,6 @@ namespace kirai {
 		np _root;
 	};
 
-	//unfinished.
 	template<class type>
 	void bst<type>::bfs(void(*visit)(type data)) {
 		kirai::queue<np> q;
@@ -67,7 +66,6 @@ namespace kirai {
 			q.pop_front();
 		}
 	}
-	//above
 
 	template <class type>
 	bstnode<type>* bst<type>::_min(np cur) const {

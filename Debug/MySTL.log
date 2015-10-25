@@ -1,3 +1,7 @@
 ﻿  tmp.cpp
-  LINK : 没有找到 C:\Users\Kazakiri\Desktop\作业\数据结构\MySTL\Debug\MySTL.exe 或上一个增量链接没有生成它；正在执行完全链接
-  MySTL.vcxproj -> C:\Users\Kazakiri\Desktop\作业\数据结构\MySTL\Debug\MySTL.exe
+c:\users\kazakiri\desktop\作业\数据结构\mystl\mystl\tmp.cpp(30): error C2664: “void kirai::bst<int>::bfs(void (__cdecl *)(type))”: 无法将参数 1 从“int (__cdecl *)(int)”转换为“void (__cdecl *)(type)”
+          with
+          [
+              type=int
+          ]
+          在匹配目标类型的范围内没有具有该名称的函数
