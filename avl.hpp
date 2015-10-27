@@ -49,6 +49,7 @@ namespace kirai {
 		avlnode<type>* _min(np) const;
 		avlnode<type>* _max(np) const;
 		void _setnull(np, np);
+		int _setheight(np);
 		void _insert(np, const type&);
 		void _inorder(np, void(*)(type));
 		void _postorder(np, void(*)(type));
@@ -66,7 +67,17 @@ namespace kirai {
 	};
 
 	template<class type>
+	int avl<type>::_setheight(np cur) {
+		if (!cur)	return -1;
+		if (_isleaf(cur)) return cur->height = 0;
+		int a = _setheight(cur->left);
+		int b = _setheight(cur->right);
+		return cur->height = (a > b ? a : b) + 1;
+	}
+
+	template<class type>
 	void avl<type>::bfs(void(*visit)(type data)) {
+		if (empty()) return;
 		kirai::queue<np> q;
 		q.push_back(_root);
 		while (!q.empty()) {
@@ -138,6 +149,7 @@ namespace kirai {
 			return false;
 		}
 		_remove(cur);
+		_setheight(_root);
 		return true;
 	}
 
@@ -172,7 +184,6 @@ namespace kirai {
 			return;
 		}
 		_insert(_root, x);
-		return;
 	}
 
 	template <class type>
@@ -181,17 +192,11 @@ namespace kirai {
 			if (cur->right == NULL) {
 				np tmp = new nt();
 				cur->right = tmp;
-				cur->height++;
 				tmp->_data = x;
-				return;
 			}
 			else {
 				_insert(cur->right, x);
 			}
-			cur->height = (
-				_height(cur->left) > _height(cur->right) ?
-				_height(cur->left) : _height(cur->right)
-			) + 1;
 		}
 		if (x < cur->_data) {
 			if (cur->left == NULL) {
@@ -199,16 +204,15 @@ namespace kirai {
 				cur->left = tmp;
 				cur->height++;
 				tmp->_data = x;
-				return;
 			}
 			else {
 				_insert(cur->left, x);
 			}
-			cur->height = (
-				_height(cur->left) > _height(cur->right) ?
-				_height(cur->left) : _height(cur->right)
-			) + 1;
 		}
+		cur->height = (
+			_height(cur->left) > _height(cur->right) ?
+			_height(cur->left) : _height(cur->right)
+		) + 1;
 	}
 
 	template <class type>

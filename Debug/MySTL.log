@@ -1,6 +1,7 @@
-﻿  avl
+﻿  tmp.cpp
+c:\users\kazakiri\desktop\作业\数据结构\mystl\mystl\tmp.cpp(34): warning C4101: “tmp”: 未引用的局部变量
   正在生成代码...
   正在编译...
-  tmp.cpp
+  avl
   正在生成代码...
   MySTL.vcxproj -> C:\Users\Kazakiri\Desktop\作业\数据结构\MySTL\Debug\MySTL.exe
