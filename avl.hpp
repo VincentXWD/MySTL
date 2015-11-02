@@ -1,5 +1,5 @@
-#ifndef _KIRAI_BST
-#define _KIRAI_BST
+#ifndef _KIRAI_AVL
+#define _KIRAI_AVL
 #include "queue"
 
 namespace kirai {
@@ -23,8 +23,8 @@ namespace kirai {
 		avl() { _root = NULL; }
 		~avl() = default;
 
-	public:
 		//Interfaces
+	public:
 		bool empty() const { return _root == NULL; }
 		void insert(const type&);
 		bool search(const type& x) const { return _search(_root, x) ? true : false; }
@@ -40,6 +40,7 @@ namespace kirai {
 		void preorder(void(*visit)(type)) { _preorder(_root, visit); };
 		void inorder(void(*visit)(type)) { _inorder(_root, visit); };
 		void postorder(void(*visit)(type)) { _postorder(_root, visit); };
+		void clear() { _clear(_root); _root = NULL; };
 
 	protected:
 		int _height(np cur) { return _empty(cur) ? -1 : cur->height; }
@@ -48,9 +49,10 @@ namespace kirai {
 		avlnode<type>* _search(np, const type&);
 		avlnode<type>* _min(np) const;
 		avlnode<type>* _max(np) const;
+		void _clear(np);
 		void _setnull(np, np);
 		int _setheight(np);
-		void _insert(np, const type&);
+		avlnode<type>* _insert(np, const type&);
 		void _inorder(np, void(*)(type));
 		void _postorder(np, void(*)(type));
 		void _preorder(np, void(*)(type));
@@ -61,10 +63,68 @@ namespace kirai {
 	protected:
 		bool _isroot(np cur) { return (cur == _root); }
 		static bool _isleaf(np cur) { return (cur->left == NULL && cur->right == NULL); }
+		avlnode<type>* _left_rotate(np);
+		avlnode<type>* _right_rotate(np);
+		avlnode<type>* _double_left_rotate(np);
+		avlnode<type>* _double_right_rotate(np);
 
 	private:
 		np _root;
 	};
+
+	template<class type>
+	avlnode<type>* avl<type>::_left_rotate(np cur) {
+		np tmp;
+		tmp = cur->left;
+		tmp->right = cur;
+		cur->height = (
+			_height(cur->left) > _height(cur->right) ?
+			_height(cur->left) : _height(cur->right)
+		) + 1;
+
+		tmp->height = (
+			_height(tmp->left) > _height(cur->right) ?
+			_height(tmp->left) : _height(cur->right)
+		) + 1;
+		return tmp;
+
+	}
+
+	template<class type>
+	avlnode<type>* avl<type>::_right_rotate(np cur) {
+		np tmp;
+		tmp = cur->right;
+		tmp->left = cur;
+		cur->height = (
+			_height(cur->left) > _height(cur->right) ?
+			_height(cur->left) : _height(cur->right)
+			) + 1;
+
+		tmp->height = (
+			_height(tmp->right) > _height(cur->left) ?
+			_height(tmp->right) : _height(cur->left)
+			) + 1;
+		return tmp;
+	}
+
+	template<class type>
+	avlnode<type>* avl<type>::_double_left_rotate(np cur) {
+		cur->left = _right_rotate(cur->left);
+		return _left_rotate(cur);
+	}
+
+	template<class type>
+	avlnode<type>* avl<type>::_double_right_rotate(np cur) {
+		cur->right = _left_rotate(cur->right);
+		return _right_rotate(cur);
+	}
+
+	template<class type>
+	void avl<type>::_clear(np cur) {
+		if (cur->left) _clear(cur->left);
+		if (cur->right) _clear(cur->right);
+		_remove(cur);
+	}
 
 	template<class type>
 	int avl<type>::_setheight(np cur) {
@@ -183,11 +243,11 @@ namespace kirai {
 			_root->height = 0;
 			return;
 		}
-		_insert(_root, x);
+		_root = _insert(_root, x);
 	}
 
 	template <class type>
-	void avl<type>::_insert(np cur, const type& x) {
+	avlnode<type>* avl<type>::_insert(np cur, const type& x) {
 		if (x > cur->_data) {
 			if (cur->right == NULL) {
 				np tmp = new nt();
@@ -195,7 +255,15 @@ namespace kirai {
 				tmp->_data = x;
 			}
 			else {
-				_insert(cur->right, x);
+				cur->right = _insert(cur->right, x);
+				if (_height(cur->right) - _height(cur->left) == 2) {
+					if (x > cur->right->_data) {
+						cur = _right_rotate(cur);
+					}
+					else {
+						cur = _double_right_rotate(cur);
+					}
+				}
 			}
 		}
 		if (x < cur->_data) {
@@ -206,13 +274,57 @@ namespace kirai {
 				tmp->_data = x;
 			}
 			else {
-				_insert(cur->left, x);
+				cur->left = _insert(cur->left, x);
+				if (_height(cur->left) - _height(cur->right) == 2) {
+					if (x < cur->left->_data) {
+						cur = _left_rotate(cur);
+					}
+					else {
+						cur = _double_left_rotate(cur);
+					}
+				}
 			}
 		}
 		cur->height = (
 			_height(cur->left) > _height(cur->right) ?
 			_height(cur->left) : _height(cur->right)
+			) + 1;
+		return cur;
+		if (cur == NULL) {
+			np tmp = new nt();
+			tmp->_data = x;
+			cur = tmp;
+			cur->left = NULL;
+			cur->right = NULL;
+		}
+		else if (x < cur->_data) {
+			cur->left = _insert(cur->left, x);
+			if (_height(cur->left) - _height(cur->right) == 2) {
+				if (x < cur->left->_data) {
+					cur = _left_rotate(cur);
+				}
+				else {
+					cur = _double_left_rotate(cur);
+				}
+			}
+		}
+		else if (x > cur->_data) {
+			cur->right = _insert(cur->right, x);
+			if (_height(cur->right) - _height(cur->left) == 2) {
+				if (x > cur->right->_data) {
+					cur = _right_rotate(cur);
+				}
+				else {
+					cur = _double_right_rotate(cur);
+				}
+			}
+		}
+		
+		cur->height = (
+			_height(cur->left) > _height(cur->right) ?
+			_height(cur->left) : _height(cur->right)
 		) + 1;
+		return cur;
 	}
 
 	template <class type>

@@ -83,6 +83,7 @@
     <ClInclude Include="deque" />
     <ClInclude Include="deque.hpp" />
     <ClInclude Include="list.hpp" />
+    <ClInclude Include="priority_queue" />
     <ClInclude Include="queue.hpp" />
     <ClInclude Include="stack.hpp" />
     <ClInclude Include="stack" />
@@ -92,6 +93,7 @@
     <ClCompile Include="avl" />
     <ClCompile Include="bst" />
     <ClCompile Include="list" />
+    <ClCompile Include="priority_queue.hpp" />
     <ClCompile Include="tmp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

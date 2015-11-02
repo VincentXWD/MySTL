@@ -42,6 +42,9 @@
     <ClInclude Include="avl.hpp">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="priority_queue">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tmp.cpp">
@@ -55,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="avl">
       <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="priority_queue.hpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

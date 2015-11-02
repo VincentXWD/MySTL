@@ -8,7 +8,6 @@
 #include <fstream>
 #include <cassert>
 #include <cstdio>
-#include <cstdlib>
 #include <bitset>
 #include <vector>
 #include <deque>
@@ -18,43 +17,35 @@
 #include <set>
 #include <map>
 #include <cmath>
-#include "avl.hpp"
+#include "bst"
 
 using namespace std;
 
 void show(int x) {
 	printf("%d ", x);
 }
-void foo(int x) {
-	
-}
+
 int main() {
 	freopen("in", "r", stdin);
-	kirai::avl<int> a;
-	int tmp;
-	for (int i = 0; i < 10; i++) {
-		scanf("%d", &tmp);
-		a.insert(tmp);
-		a.bfs(foo);
-		printf("\n");
+	int n, tmp;
+	kirai::bst<int> root;
+	while (~scanf("%d", &n)) {
+		for (int i = 0; i < n; i++) {
+			scanf("%d", &tmp);
+			root.insert(tmp);
+		}
+		printf("Preorder traversal:\n");
+		root.preorder(show);
+		printf("\nInorder traversal:\n");
+		root.inorder(show);
+		printf("\nPostorder traversal:\n");
+		root.postorder(show);
+		printf("\nBreadth first search:\n");
+		root.bfs(show);
+		printf("\nDepth first search:\n");
+		root.dfs(show);
+		printf("\n\n");
+		root.clear();
 	}
-	a.remove(6);
-	printf("\n");
-	a.preorder(show);
-	printf("\n");
-	a.bfs(foo);
-	printf("\n");
-
-	//a.insert(26);
-	//a.inorder(show);
-	//printf("\n");
-	//a.preorder(show);
-	//printf("\n");
-	//a.postorder(show);
-	//printf("\n");
-	//a.bfs(foo);
-	//printf("\n");
-	//a.remove(6);
-	//a.bfs(foo);
-	//printf("\n");
+	return 0;
 }
