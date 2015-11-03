@@ -2,6 +2,8 @@
 #define _KIRAI_BST
 #include "queue"
 #include "stack"
+#include <iostream>
+#include <cmath>
 
 namespace kirai {
 	template<class type>
@@ -9,9 +11,10 @@ namespace kirai {
 		typedef bstnode<type>* np;
 		type _data;
 		int height;
+		int depth;
 		np left;
 		np right;
-		bstnode<type>() { height = 0; left = NULL; right = NULL; }
+		bstnode<type>() { height = 0; depth = 0; left = NULL; right = NULL; }
 		bstnode<type>(const int& x) : _data(x) { bstnode<type>(); }
 	};
 
@@ -43,6 +46,23 @@ namespace kirai {
 		void inorder(void(*visit)(type)) { _inorder(_root, visit); };
 		void postorder(void(*visit)(type)) { _postorder(_root, visit); };
 		void clear() { _clear(_root); _root = NULL; };
+		friend std::ostream& operator<<(std::ostream& osu, const bst<type>& tree) {
+			kirai::queue<bstnode<type>*> q;
+			q.push_back(tree._root);
+			int depth = tree._root->height;
+			while (!q.empty()) {
+				bstnode<type>* tmp = q.front();
+				if (tmp->left)  q.push_back(tmp->left);
+				if (tmp->right) q.push_back(tmp->right);
+				q.pop_front();
+				if (!q.empty() && q.front()->depth != tmp->depth) {
+					std::cout << std::endl;
+					depth--;
+				}
+				//std::cout << tmp->depth << " ";
+			}
+			return osu;
+		}
 
 	protected:
 		int _height(np cur) { return _empty(cur) ? -1 : cur->height; }
@@ -54,7 +74,7 @@ namespace kirai {
 		void _clear(np);
 		void _setnull(np, np);
 		int _setheight(np);
-		void _insert(np, const type&);
+		void _insert(np, const type&, int);
 		void _inorder(np, void(*)(type));
 		void _postorder(np, void(*)(type));
 		void _preorder(np, void(*)(type));
@@ -69,6 +89,24 @@ namespace kirai {
 	private:
 		np _root;
 	};
+
+	//template<class type>
+	//std::ostream& operator<<(std::ostream& osu, bst<type>& tree) {
+	//	if (tree->empty()) return;
+	//	kirai::queue<bstnode<type>*> q;
+	//	q.push_back(tree->_root);
+	//	while (!q.empty()) {
+	//		bstnode<type>* tmp = q.front();
+	//		if (tmp->left)  q.push_back(tmp->left);
+	//		if (tmp->right) q.push_back(tmp->right);
+	//	}
+	//	while (!q.empty()) {
+	//		
+	//		std::cout << q.top() << " ";
+	//		q.pop();
+	//	}
+	//	return osu;
+	//}
 
 	template<class type>
 	void bst<type>::_clear(np cur) {
@@ -85,7 +123,7 @@ namespace kirai {
 		int b = _setheight(cur->right);
 		return cur->height = (a > b ? a : b) + 1;
 	}
-
+	
 	template<class type>
 	void bst<type>::bfs(void(*visit)(type data)) {
 		if (empty()) return;
@@ -95,8 +133,8 @@ namespace kirai {
 			np tmp = q.front();
 			q.pop_front();
 			visit(tmp->_data);
-			if (tmp->left)        q.push_back(tmp->left);
-			if (tmp->right)    q.push_back(tmp->right);
+			if (tmp->left)  q.push_back(tmp->left);
+			if (tmp->right) q.push_back(tmp->right);
 		}
 	}
 
@@ -204,21 +242,23 @@ namespace kirai {
 			_root = tmp;
 			_root->_data = x;
 			_root->height = 0;
+			_root->depth = 0;
 			return;
 		}
-		_insert(_root, x);
+		_insert(_root, x, 1);
 	}
 
 	template <class type>
-	void bst<type>::_insert(np cur, const type& x) {
+	void bst<type>::_insert(np cur, const type& x, int depth) {
 		if (x > cur->_data) {
 			if (cur->right == NULL) {
 				np tmp = new nt();
 				cur->right = tmp;
 				tmp->_data = x;
+				tmp->depth = depth;
 			}
 			else {
-				_insert(cur->right, x);
+				_insert(cur->right, x, depth+1);
 			}
 		}
 		if (x < cur->_data) {
@@ -227,15 +267,16 @@ namespace kirai {
 				cur->left = tmp;
 				cur->height++;
 				tmp->_data = x;
+				tmp->depth = depth;
 			}
 			else {
-				_insert(cur->left, x);
+				_insert(cur->left, x, depth+1);
 			}
 		}
 		cur->height = (
 			_height(cur->left) > _height(cur->right) ?
 			_height(cur->left) : _height(cur->right)
-		) + 1;
+			) + 1;
 	}
 
 	template <class type>

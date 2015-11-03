@@ -19,10 +19,12 @@
 #include <cmath>
 #include "bst"
 
-using namespace std;
-
 void show(int x) {
 	printf("%d ", x);
+}
+
+void foo(int x) {
+	return;
 }
 
 int main() {
@@ -44,6 +46,8 @@ int main() {
 		root.bfs(show);
 		printf("\nDepth first search:\n");
 		root.dfs(show);
+		printf("\nosu!:\n");
+		std::cout << root;
 		printf("\n\n");
 		root.clear();
 	}
